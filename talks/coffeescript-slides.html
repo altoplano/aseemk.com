@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>TODO – Talks – Aseem Kishore</title>
+
+        <meta name="description" content="TODO">
+        <meta name="author" content="Aseem Kishore">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+
+<!-- custom styles for the slides! written in Stylus for convenience. -->
+<style type="text/stylus">
+
+// XXX remove unnecessary padding:
+
+div.reveal > div.slides > section
+    padding 0
+
+// optimize for big, centered images:
+
+div.reveal > div.slides > section img
+    margin 0
+    border none
+    max-width 100%
+    max-height 100%
+
+// some general colors (hacky overrides, requires shadows too):
+
+span.positive
+    color #8f8
+    h1 &
+        text-shadow 0 5px 0 #080
+
+span.negative
+    color #f88
+    h1 &
+        text-shadow 0 5px 0 #800
+
+strong
+    color #bbf
+
+// some general layout tweaks:
+
+pre code
+    padding 0.5em
+
+section.small-img-portrait
+    img
+        height 100%
+
+section.small-img-landscape
+    img
+        width 100%
+
+// XXX explicit specificity needed;
+.reveal section li
+    font-size 1.5em
+    line-height 1em
+    margin 0.5em auto
+
+    // remember to cancel out nested li's, but here we want them even smaller:
+    li
+        font-size 0.5em
+        margin 0.25em auto
+
+// don't stifle code blocks; specificity needed here too
+.reveal code
+    max-height 90%
+
+.a-lot-of-code code
+    font-size 0.5em
+    line-height 1.5
+
+ul.two-column li
+    display inline
+    float left
+    width 50%
+    font-size 1em
+
+// slide-specific overrides:
+
+section#title
+    .negative
+        font-size 0.8em
+    h2
+        margin-top 0.5em
+    h4
+        margin-top 1.5em
+
+</style>
+
+<script src="/scripts/stylus.js"></script>
+<script>
+    var styles = document.querySelectorAll('style[type="text/stylus"]');
+    [].slice.call(styles).forEach(function (style) {
+        style.setAttribute('type', 'text/css');
+        stylus(style.innerHTML).render(function (err, str) {
+            if (err) return console.error(err);
+            style.innerHTML = str;
+        });
+    });
+</script>
+
+    </head>
+
+    <body>
+
+<div class="reveal">
+<div class="slides">
+
+<!--
+    all of the sections (slides) below are written in Markdown;
+    we wrap them in proper script tags, etc. at the bottom via script.
+    same for the asides (speaker notes).
+-->
+
+
+<!-- INTRO -->
+
+<section id="title">
+# <span class="negative">&nbsp;I Don't Drink Coffee…</span>
+# <span class="positive">But I Do Write CoffeeScript</span>
+## (This Makes Me Unbiased)
+#### <a href="http://aseemk.com/" target="_blank">Aseem Kishore</a> / <a href="TODO" target="_blank">June 2013</a>
+</section>
+<aside>
+Hi guys. My name is [Aseem Kishore](http://aseemk.com/), and I'm here to talk
+about CoffeeScript.
+
+TODO
+</aside>
+
+<section>
+[![](/images/neo4j-lessons-learned/fiftythree-hp.png)](http://www.fiftythree.com/)
+</section>
+<aside>
+I'm a developer at a startup here in NYC called [FiftyThree](http://www.fiftythree.com/). We make an iPad app called [Paper](http://www.fiftythree.com/paper).
+
+TODO
+
+It's worth noting that I can't take any of the credit for Paper's quality or success. That's all the amazing work of the other folks at FiftyThree. I'm leading the development of our next product, which we haven't announced yet.
+</aside>
+
+<section>
+[![](/images/neo4j-lessons-learned/thingdom-hp-gasi.png)](http://www.thethingdom.com/)
+</section>
+<aside>
+Before I joined FiftyThree, I built a startup called [The Thingdom](http://www.thethingdom.com/), which was a social network around products. I built this with my friend and co-founder, [Daniel Gasienica](http://gasi.ch/). This is him (and his photography gear) pictured here.
+</aside>
+
+<section>
+[![](/images/neo4j-lessons-learned/zoomit-hp.png)](http://zoom.it/)
+</section>
+<aside>
+(TODO) we had built this "bit.ly for high-res images" type of site and service called [Zoom.it](http://zoom.it/).
+</aside>
+
+<section>
+[![](/images/coffeescript-talk/coffeescript-hp.png)](http://coffeescript.org/)
+</section>
+<aside>
+TODO
+</aside>
+
+<section>
+# CoffeeScript is...
+
+<ul>
+<li class="fragment">Its own language</li>
+<li class="fragment">"Just" JavaScript</li>
+<li class="fragment">A strict subset of JS</li>
+<li class="fragment">(Even more) functional</li>
+<li class="fragment">Very sweet and sugary</li>
+</ul>
+</section>
+<aside>
+- 1:1 w/ JS
+</aside>
+
+<section>
+# CoffeeScript is...
+
+![The 10th most popular language on GitHub!](/images/coffeescript-talk/github-langs-coffeescript.png)
+</section>
+<aside>
+</aside>
+
+<section>
+(That's higher than...)
+
+<ul class="two-column">
+<li class="fragment">Objective-C</li>
+<li class="fragment">C#</li>
+<li class="fragment">ActionScript</li>
+<li class="fragment">Any other -to-JS lang</li>
+<li class="fragment">Clojure</li>
+<li class="fragment">Go</li>
+<li class="fragment">Groovy</li>
+<li class="fragment">Scala</li>
+</ul>
+</section>
+<aside>
+And this isn't just riding the coattails of Node.js or JS in general -- this is explicitly CoffeeScript usage.
+</aside>
+
+<section>
+```
+class Person
+    constructor: (@name) ->
+
+    toString: ->
+        @name
+
+class Employee extends Person
+    constructor: (name, @department) ->
+        super name
+
+    toString: ->
+        "#{@name} in #{@department}"
+
+alice = new Employee 'Alice Jenkins', 'Engineering'
+bob = new Employee 'Bob Spoth', 'Marketing'
+
+console.log "Our employees are #{alice} and #{bob}."
+```
+</section>
+
+<section class="a-lot-of-code">
+```
+var Employee, Person, alice, bob,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Person = (function() {
+  function Person(name) {
+    this.name = name;
+  }
+
+  Person.prototype.toString = function() {
+    return this.name;
+  };
+
+  return Person;
+
+})();
+
+Employee = (function(_super) {
+  __extends(Employee, _super);
+
+  function Employee(name, department) {
+    this.department = department;
+    Employee.__super__.constructor.call(this, name);
+  }
+
+  Employee.prototype.toString = function() {
+    return "" + this.name + " in " + this.department;
+  };
+
+  return Employee;
+
+})(Person);
+
+alice = new Employee('Alice Jenkins', 'Engineering');
+
+bob = new Employee('Bob Spoth', 'Marketing');
+
+console.log("Our employees are " + alice + " and " + bob + ".");
+```
+</section>
+
+
+<!-- WHY / WHY NOT -->
+
+<section>
+# Why
+
+<ul>
+<li class="fragment">Syntax</li>
+<li class="fragment">Convenience</li>
+<li class="fragment">Productivity</li>
+<li class="fragment">Robustness</li>
+<li class="fragment">ES6</li>
+</ul>
+</section>
+<aside>
+Also, elegance, but that's subjective.
+</aside>
+
+<section>
+# Why Not
+
+<ul>
+<li class="fragment">Syntax</li>
+<li class="fragment">Abstraction</li>
+<li class="fragment">Interop</li>
+<li class="fragment">Compilation</li>
+<li class="fragment">Debugging</li>
+</ul>
+</section>
+
+<section>
+![O RLY?](/images/coffeescript-talk/orly-owl.jpg)
+</section>
+<aside>
+http://www.tumblr.com/tagged/orly%20owl
+</aside>
+
+
+<!-- WALKTHROUGH -->
+
+<section>
+# Agenda
+
+<ul>
+<li class="fragment">Basics</li>
+<li class="fragment">Examples</li>
+<li class="fragment">Gotchas</li>
+<li class="fragment">Opinions</li>
+<li class="fragment">Logistics</li>
+</ul>
+</section>
+
+<section>
+```
+class Person
+    constructor: (@name) ->
+
+    toString: ->
+        @name
+
+class Employee extends Person
+    constructor: (name, @department) ->
+        super name
+
+    toString: ->
+        "#{@name} in #{@department}"
+
+alice = new Employee 'Alice Jenkins', 'Engineering'
+bob = new Employee 'Bob Spoth', 'Marketing'
+
+console.log "Our employees are #{alice} and #{bob}."
+```
+</section>
+
+<section>
+# Syntax
+
+<ul>
+<li class="fragment">Significant whitespace</li>
+<li class="fragment">Implicit parentheses</li>
+<li class="fragment">Arrows for functions</li>
+<li class="fragment">No <code>var</code> statement</li>
+</ul>
+</section>
+
+<section>
+![Red pill, blue pill](/images/coffeescript-talk/matrix-red-pill-blue-pill.jpg)
+</section>
+<aside>
+Can def take getting used to. Take your time.
+
+http://ospreydream.blogspot.com/2013/03/the-matrix-blue-pill-or-red-pill.html
+</aside>
+
+<section>
+# Disallowed
+
+Default global writes:
+
+```
+function hypot(a, b) {
+    c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+    console.log('hypot() called...', a, b, c);
+    return c;
+}
+
+hypot(3, 4);
+console.log(c); // 5
+```
+
+```
+hypot = (a, b) →
+    c = Math.sqrt Math.pow(a, 2) + Math.pow(b, 2))
+    console.log 'hypot() called...', a, b, c
+    c
+
+hypot 3, 4
+console.log c   # throws ReferenceError
+```
+</section>
+<aside>
+TODO fix up arrow
+</aside>
+
+<section>
+# Disallowed
+
+(But existing global/outer references still work:)
+
+```
+nextId = 0
+
+generateId = ->
+    nextId++
+
+console.log generateId()    # 0
+console.log generateId()    # 1
+console.log generateId()    # 2
+
+// but be careful in one-off scripts!
+n = 10
+...
+someFunc = (items) →
+    n = items.length
+```
+</section>
+<aside>
+TODO fix arrow
+</aside>
+
+<section>
+# Disallowed
+
+Type coercion with <code>==</code> and <code>!=</code>:
+
+```
+[0] == ![0]     // true
+
+'' == 0     // true
+0 == '0'    // true
+'' == '0'   // false
+
+false == 'false'    // false
+false == '0'        // true
+```
+
+```
+(CoffeeScript compiles == to === and != to !==)
+```
+</section>
+<aside>
+http://wil.boayue.com/blog/2012/07/17/wtf-javascript-type-coercion/
+http://stackoverflow.com/questions/359494/javascript-vs-does-it-matter-which-equal-operator-i-use
+</aside>
+
+<section>
+# Disallowed
+
+<code>switch</code> <code>case</code> fall-throughs:
+
+```
+switch (type) {
+    case 'user':
+        handleUser();
+    case 'photo':
+    case 'status':
+        handlePost();
+        break;
+}
+```
+
+```
+switch type
+    when 'user'
+        handleUser()
+    when 'photo', 'status'
+        handlePhoto()
+```
+</section>
+<aside>
+Notice the minor difference: `case` --> `when`
+</aside>
+
+<section>
+# Minor Differences
+
+```
+switch
+    when
+        ...
+
+for elmt in arr
+    ...
+
+for elmt, i in arr
+    ...
+
+for key, val of obj
+    ...
+
+// danger: mixing up for-in and for-of
+```
+</section>
+<aside>
+`for elmt in arr` alone should save you thousands of keystrokes.
+</aside>
+
+<section>
+### &nbsp;
+
+![Everything is an expression](/images/coffeescript-talk/everything-is-an-expression-meme.jpg)
+</section>
+
+<section>
+# Expressions
+
+```
+view =
+    if loggedIn
+        'home'
+    else
+        'landing'
+
+view =
+    if loggedIn then 'home'
+    else 'landing'
+
+// this is the equiv of JS ternary:
+view = (if loggedIn then 'home' else 'landing')
+
+// postfix form, bc of precedence (no else possible):
+view = 'admin' if isAdmin
+```
+</section>
+
+<section>
+# Expressions
+
+```
+func =
+    switch req.method
+        when 'GET'
+            'show'
+        when 'POST', 'PATCH'
+            'update'
+        when 'PUT'
+            'replace'
+        when 'DELETE'
+            'destroy'
+        else
+            'catchAll'
+
+func = switch req.method
+    when 'GET' then 'show'
+    when 'POST', 'PATCH' then 'update'
+    when 'PUT' then 'replace'
+    when 'DELETE' then 'destroy'
+    else 'catchAll'
+```
+</section>
+
+<section>
+# Expressions
+
+```
+result =
+    try
+        readFromCache()
+    catch err
+        generate()
+
+result =
+    try
+        readFromCache()
+    catch err
+        null
+
+// equiv to previous:
+result = try
+    readFromCache()
+```
+</section>
+
+<section>
+# Expressions
+
+```
+names =
+    for user in users
+        user.name
+
+names = (for user in users then user.name)
+
+names = (user.name for user in users)
+
+// danger -- watch out for precedence; these two are equiv:
+names = user.name for user in users
+(names = user.name) for user in users
+
+map = {}
+map[user.id] = user for user in users
+```
+</section>
+
+<section>
+(image of sugar)
+</section>
+
+<section>
+# Sugar
+
+```
+// chained comparisons:
+if width <= 320
+    # mobile portrait
+else if 321 <= width <= 480
+    # mobile landscape
+else if 481 <= width <= 768
+    # tablet portrait
+else if 769 <= width <= 1024
+    # tablet landscape
+else
+    # desktop
+```
+</section>
+
+<section>
+# Sugar
+
+```
+// unless == if not:
+return 'off' unless activated
+
+// until == while not
+// (but note: postfix does not mean do-while/until!)
+tryAgain() until successful
+
+// testing array presence:
+if elmt in array
+    ...
+
+// testing object presence:
+if prop of obj
+    ...
+
+// watch out again for in vs. of!
+```
+</section>
+
+<section>
+# Sugar
+
+```
+// test hasOwnProperty:
+for own key, val of obj
+    ...
+
+// filter:
+for elmt in array when elmt.type is 'image'
+    ...
+
+// slices:
+first10 = array[...10]          # == array[0...10] == array[0..11]
+thirdOnward = array[3...]       # == array[3..]
+thirdFourthFifth = array[3..5]  # == array[3...6]
+
+// ranges:
+for odds in [1...100] by 2
+    ...
+
+// splicing:
+array[3..5] = ['replacing', 'these', 'elements']
+```
+</section>
+
+<section>
+# Sugar
+
+```
+// immediately-invokved anonymous functions:
+do (orig=setTimeout) ->
+    setTimeout = ->
+        console.log 'in your scripts, setting your timeoutz'
+        orig.apply this, arguments
+
+// perfect for those tricksy loop closure traps:
+for elmt in array
+    do (elmt) ->
+        model.on 'update', ->
+            elmt.update()
+```
+</section>
+
+<section>
+# Sugar
+
+```
+// optional params:
+fetch = (count=10) ->
+    ...
+
+// splats:
+announce = (first, second, third, others...) ->
+    console.log "The medal winners are...", first, second, third
+    console.log others.length, "other runners ran the race."
+
+// in calls too:
+finishers = ['Alice', 'Bob', 'Carol', 'David', 'Ernie']
+announce finishers...
+```
+</section>
+
+<section>
+# Sugar
+
+```
+// destructuring:
+{x, y} = point
+drawImage img, x, y
+
+// arrays too (similar to splats):
+[first, second, third, rest...] = finishers
+
+// restructuring:
+res.render 'profile' {user, photos}
+```
+</section>
+
+<section>
+# Sugar
+
+```
+
+```
+</section>
+
+<section>
+TODO
+</section>
+
+<section>
+TODO
+</section>
+
+<section>
+TODO
+</section>
+
+<section>
+[![](/images/neo4j-lessons-learned/fiftythree-hp.png)](http://www.fiftythree.com/)
+</section>
+<aside>
+And that's that!
+
+So check out [FiftyThree](http://www.fiftythree.com/) and [Paper](http://www.fiftythree.com/paper) again if you haven't already. We're very much looking forward to shipping what we're building with this tech.
+</aside>
+
+<section>
+# Thanks!
+
+&nbsp;
+
+### Twitter: [@aseemk](https://twitter.com/aseemk)
+### GitHub: [@aseemk](https://github.com/aseemk)
+### Email: [aseem@fiftythree.com](mailto:aseem@fiftythree.com)
+
+&nbsp;
+
+Questions?
+</section>
+<aside>
+And thanks to [Reveal.js](https://github.com/hakimel/reveal.js) by [Hakim El Hattab](http://hakim.se/about) for the excellent platform on which this presentation was created.
+
+If you want to see how I created this slides+notes [combo viewer](https://github.com/hakimel/reveal.js/issues/304), don't hesitate to [view source](http://github.com/aseemk/aseemk.com). ;)
+
+I hope this presentation helped, and I look forward to seeing all the great things you build too!
+
+Cheers,<br/>
+Aseem
+
+P.S. Comments/questions/feedback welcome here: [Neo4j lessons learned](/blog/neo4j-lessons-learned). =)
+</aside>
+
+
+</div>  <!-- .slides -->
+</div>  <!-- .reveal -->
+
+<script>
+// add data-markdown attributes to all slides and speaker notes,
+// and insert the speaker notes into the slides, as reveal needs:
+// (important: the reveal documentation says to wrap the markdown in script
+// tags, but this is both unnecessary and error-prone w/ speaker nodes!)
+var sections = document.getElementsByTagName('section');
+[].slice.call(sections).forEach(function (section) {
+    section.setAttribute('data-markdown', 'true');
+
+    // does this slide have speaker notes?
+    var aside = section.nextElementSibling;
+    if (aside && aside.tagName === 'ASIDE') {
+        aside.className = 'notes';
+        aside.setAttribute('data-markdown',  'true');
+        section.appendChild(aside);
+    }
+});
+</script>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+                rollingLinks: false,
+
+                // we'd normally like this, it wasn't there when this
+                // presentation was authored, so...
+                center: false,
+
+                // this presentation was authored for 1024x768, but at the
+                // time, Reveal set a max-width of 900, and we set the slides
+                // container to 90%x80%... this is what it somehow came to:
+                width: 900,
+                height: 654,
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
